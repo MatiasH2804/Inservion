@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="es">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Auditor de Inversión</title>
+
+  <!-- PWA / ICONOS -->
+  <link rel="manifest" href="manifest.json">
+
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="shortcut icon" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+
+<meta name="theme-color" content="#00b7ff">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Auditor">
+  <link rel="stylesheet" href="google.css">
+</head>
+  <body>
+    <div class="app-shell">
+      <div class="desktop-app-layout">
+        <aside class="desktop-app-sidebar" aria-label="NavegaciÃ³n de escritorio">
+          <div class="desktop-sidebar-brand">
+            <img class="desktop-sidebar-logo" src="icon.png" alt="">
+            <div>
+              <strong>Auditor</strong>
+              <span>Inversiones personales</span>
+            </div>
+          </div>
+          <nav class="desktop-nav" aria-label="Vistas de escritorio">
+            <button class="desktop-nav-button is-active" type="button" data-view-target="inicio"><span class="nav-icon"></span><span class="nav-label">Inicio</span></button>
+            <button class="desktop-nav-button" type="button" data-view-target="nuevo"><span class="nav-icon"></span><span class="nav-label">Nuevo</span></button>
+            <button class="desktop-nav-button" type="button" data-view-target="reportes"><span class="nav-icon"></span><span class="nav-label">Reportes</span></button>
+            <button class="desktop-nav-button" type="button" data-view-target="visual"><span class="nav-icon"></span><span class="nav-label">Visual</span></button>
+            <button class="desktop-nav-button" type="button" data-view-target="tablas"><span class="nav-icon"></span><span class="nav-label">Tablas</span></button>
+            <button class="desktop-nav-button" type="button" data-view-target="auditoria"><span class="nav-icon"></span><span class="nav-label">Auditoría</span></button>
+            <button class="desktop-nav-button" type="button" data-view-target="registros"><span class="nav-icon"></span><span class="nav-label">Registros</span></button>
+          </nav>
+        </aside>
+
+        <section class="desktop-app-main">
+          <div class="desktop-topbar">
+      <header class="app-header aero-glass">
+        <div class="header-copy">
+          <div class="aero-title-row">
+    <h1>Auditor de Inversión</h1>
+</div>
+          <p id="lastSyncText">Sin sincronizaciones todavia</p>
+        </div>
+
+        <div class="header-status-zone">
+          <div class="aero-bubble-large" aria-hidden="true"></div>
+          <div id="statusBanner" class="status-banner status-pending" role="status">Cargando cache local</div>
+        </div>
+      </header>
+
+          </div>
+
+          <div class="desktop-view-container">
+      <main class="desktop-view-list">
+        <section class="desktop-view is-active" data-desktop-view="inicio">
+          <div class="desktop-view-inner inicio-dashboard-grid">
+        <section id="section-summary" class="summary-grid" aria-label="Resumen principal">
+          <article class="summary-card"><span>Valor actual</span><strong id="summaryCurrent">$ 0,00</strong></article>
+          <article class="summary-card"><span>Ganancia ultimo registro</span><strong id="summaryGain">$ 0,00</strong></article>
+          <article class="summary-card"><span>Porcentaje ultimo registro</span><strong id="summaryPercent">0,00%</strong></article>
+          <article class="summary-card"><span>Movimiento de capital neto</span><strong id="summaryAdded">$ 0,00</strong></article>
+          <article class="summary-card"><span>Cantidad de registros</span><strong id="summaryCount">0</strong></article>
+          <article class="summary-card"><span>Aportes positivos</span><strong id="summaryPositiveAdded">$ 0,00</strong></article>
+          <article class="summary-card"><span>Retiros negativos</span><strong id="summaryNegativeAdded">$ 0,00</strong></article>
+          <article class="summary-card analytics-card"><span>Ganancia real total</span><strong id="summaryFilteredGain">$ 0,00</strong></article>
+          <article class="summary-card analytics-card"><span>Promedio diario de ganancia real</span><strong id="summaryDailyAvg">$ 0,00</strong></article>
+          <article class="summary-card analytics-card"><span>Mejor dia por ganancia real</span><strong id="summaryBestDay">-</strong></article>
+          <article class="summary-card analytics-card"><span>Peor dia por ganancia real</span><strong id="summaryWorstDay">-</strong></article>
+          <article class="summary-card analytics-card"><span>Promedio mensual %</span><strong id="summaryMonthlyPercent">0,00%</strong></article>
+        </section>
+          </div>
+        </section>
+
+        <section class="desktop-view" data-desktop-view="nuevo">
+          <div class="desktop-view-inner">
+        <button id="mobileNewRecordToggle" class="mobile-only mobile-new-record-toggle" type="button">
+          + Nuevo registro
+        </button>
+
+        <div id="section-new-record" class="section-anchor-wrap">
+        <section id="newRecordPanel" class="panel new-record-panel">
+          <div class="section-heading">
+            <h2>Nuevo registro</h2>
+          </div>
+          <form id="recordForm" class="record-form">
+            <label>
+              <span>Fecha</span>
+              <input id="dateInput" name="fecha" type="date" required>
+            </label>
+            <label>
+              <span>Hora</span>
+              <input id="timeInput" name="hora" type="time" step="1" required>
+            </label>
+            <label>
+              <span>Cuanto tenia la ultima vez</span>
+              <input id="previousInput" name="previous" type="text" readonly>
+            </label>
+            <label>
+              <span>Porcentaje de incremento</span>
+              <input id="percentInput" name="percent" type="text" readonly>
+            </label>
+            <label>
+              <span>Cuanto tengo hoy</span>
+              <input id="currentInput" name="cuantoTengoHoy" type="text" inputmode="decimal" required placeholder="0,00">
+            </label>
+            <label>
+              <span>Ganancia</span>
+              <input id="gainInput" name="gain" type="text" readonly>
+            </label>
+            <label>
+              <span>Plata que Agregué</span>
+              <input id="addedInput" name="plataAgregue" type="text" inputmode="decimal" placeholder="Opcional">
+            </label>
+            <label>
+              <span>Mes</span>
+              <input id="monthInput" name="month" type="text" readonly>
+            </label>
+            <button type="submit" class="primary-button">Agregar registro</button>
+          </form>
+        </section>
+        </div>
+
+        <section id="section-actions" class="toolbar" aria-label="Acciones">
+          <button id="refreshButton" type="button">Actualizar desde servidor</button>
+          <button id="syncButton" type="button">Forzar sincronización</button>
+          <button id="recalculateButton" type="button">Recalcular</button>
+          <button id="recalculateLocalButton" type="button">Recalcular cache local</button>
+          <button id="clearCacheButton" type="button" class="danger-button">Limpiar cache local</button>
+        </section>
+
+        <div id="messageArea" class="message-area" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <section id="section-main-reports" class="desktop-view reports-section" data-desktop-view="reportes">
+          <div class="desktop-view-inner">
+          <div class="section-heading">
+            <div>
+              <h2>Reportes</h2>
+              <p>Los reportes excluyen ganancias iguales o superiores a $ 1.000.000 para evitar distorsiones.</p>
+            </div>
+          </div>
+
+          <div class="reports-grid">
+            <article class="report-card chart-card">
+              <div class="report-card-header">
+                <div>
+                  <h3>Ganancia por dia</h3>
+                  <p>Suma diaria de rendimiento real, sin movimientos de capital.</p>
+                </div>
+                <button class="chart-expand-button" type="button" data-chart-expand="gain">Ampliar</button>
+              </div>
+              <div id="gainByDayChart" class="chart"></div>
+            </article>
+            <article class="report-card chart-card">
+              <div class="report-card-header">
+                <div>
+                  <h3>Porcentaje de incremento por dia</h3>
+                  <p>Promedio diario del rendimiento porcentual.</p>
+                </div>
+                <button class="chart-expand-button" type="button" data-chart-expand="percent">Ampliar</button>
+              </div>
+              <div id="percentByDayChart" class="chart"></div>
+            </article>
+          </div>
+          </div>
+        </section>
+
+        <section id="section-visual-analysis" class="desktop-view reports-section" data-desktop-view="visual">
+          <div class="desktop-view-inner">
+          <div class="section-heading visual-heading">
+            <div>
+              <h2>Análisis visual adicional</h2>
+              <p>Lecturas complementarias construidas desde el mismo ledger contable.</p>
+            </div>
+          </div>
+
+          <div class="reports-grid">
+            <article class="report-card chart-card">
+              <div class="report-card-header">
+                <div>
+                  <h3>Evolución del valor actual</h3>
+                  <p>Valor declarado de la inversión a lo largo del tiempo.</p>
+                </div>
+                <button class="chart-expand-button" type="button" data-chart-expand="balance">Ampliar</button>
+              </div>
+              <div id="balanceEvolutionChart" class="chart"></div>
+            </article>
+            <article class="report-card chart-card">
+              <div class="report-card-header">
+                <div>
+                  <h3>Ganancia real acumulada</h3>
+                  <p>Suma acumulada del rendimiento real, excluyendo movimientos de capital.</p>
+                </div>
+                <button class="chart-expand-button" type="button" data-chart-expand="cumulative">Ampliar</button>
+              </div>
+              <div id="cumulativeGainChart" class="chart"></div>
+            </article>
+            <article class="report-card chart-card">
+              <div class="report-card-header">
+                <div>
+                  <h3>Movimiento de capital por mes</h3>
+                  <p>Aportes y retiros separados del rendimiento real.</p>
+                </div>
+                <button class="chart-expand-button" type="button" data-chart-expand="capital">Ampliar</button>
+              </div>
+              <div id="capitalByMonthChart" class="chart"></div>
+            </article>
+            <article class="report-card chart-card">
+              <div class="report-card-header">
+                <div>
+                  <h3>Ganancia real por mes</h3>
+                  <p>Rendimiento real mensual sin contar aportes ni retiros.</p>
+                </div>
+                <button class="chart-expand-button" type="button" data-chart-expand="monthlyGain">Ampliar</button>
+              </div>
+              <div id="monthlyGainChart" class="chart"></div>
+            </article>
+            <article class="report-card chart-card">
+              <div class="report-card-header">
+                <div>
+                  <h3>Balance de días</h3>
+                  <p>Cantidad de días con rendimiento positivo, negativo o neutro.</p>
+                </div>
+                <button class="chart-expand-button" type="button" data-chart-expand="distribution">Ampliar</button>
+              </div>
+              <div id="dayDistributionChart" class="chart"></div>
+            </article>
+          </div>
+          </div>
+        </section>
+
+        <section id="section-summary-tables" class="desktop-view reports-section" data-desktop-view="tablas">
+          <div class="desktop-view-inner tables-dashboard-grid">
+          <div class="reports-grid">
+            <article class="report-card">
+              <h3>Ganancia por mes</h3>
+              <div class="mini-table-wrap">
+                <table class="mini-table">
+                  <thead><tr><th>Mes</th><th>Ganancia total</th><th>Cantidad</th><th>Promedio</th></tr></thead>
+                  <tbody id="gainByMonthBody"></tbody>
+                </table>
+              </div>
+            </article>
+            <article class="report-card">
+              <h3>Movimiento de capital por mes</h3>
+              <div class="mini-table-wrap">
+                <table class="mini-table">
+                  <thead><tr><th>Mes</th><th>Aportes</th><th>Retiros</th><th>Neto</th></tr></thead>
+                  <tbody id="addedByMonthBody"></tbody>
+                </table>
+              </div>
+            </article>
+            <article class="report-card">
+              <h3>Promedio % por mes</h3>
+              <div class="mini-table-wrap">
+                <table class="mini-table">
+                  <thead><tr><th>Mes</th><th>Promedio %</th><th>Cantidad</th></tr></thead>
+                  <tbody id="percentByMonthBody"></tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+          </div>
+        </section>
+
+        <section class="desktop-view reports-section" data-desktop-view="auditoria">
+          <div class="desktop-view-inner">
+          <article id="section-audit" class="report-card audit-card">
+            <div class="audit-header">
+              <h3>Auditoría de cálculo</h3>
+              <button id="toggleAuditButton" type="button">Mostrar / ocultar auditoría</button>
+            </div>
+            <div id="auditPanel" class="mini-table-wrap is-hidden">
+              <table class="mini-table audit-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Previous</th>
+                    <th>Movimiento capital</th>
+                    <th>Base esperada</th>
+                    <th>Actual</th>
+                    <th>Ganancia real</th>
+                    <th>%</th>
+                    <th>Baseline</th>
+                    <th>Incluido en reportes</th>
+                  </tr>
+                </thead>
+                <tbody id="auditBody"></tbody>
+              </table>
+            </div>
+          </article>
+          </div>
+        </section>
+
+        <section class="desktop-view" data-desktop-view="registros">
+          <div class="desktop-view-inner records-view-inner">
+        <section id="section-records" class="table-panel">
+          <div class="section-heading table-title">
+            <h2>Registros</h2>
+          </div>
+          <div class="mobile-table-controls mobile-only">
+            <button id="mobileColumnsToggle" type="button">☑ Ver columnas</button>
+            <aside id="mobileColumnsPanel" class="mobile-columns-panel" aria-label="Columnas visibles">
+              <div class="mobile-columns-header">
+                <strong>Columnas visibles</strong>
+                <button id="mobileColumnsClose" type="button">Cerrar</button>
+              </div>
+              <label><input type="checkbox" data-mobile-column="1" checked> Estado</label>
+              <label><input type="checkbox" data-mobile-column="2"> ID</label>
+              <label><input type="checkbox" data-mobile-column="3" checked> Fecha</label>
+              <label><input type="checkbox" data-mobile-column="4" checked> Hora</label>
+              <label><input type="checkbox" data-mobile-column="5"> Anterior</label>
+              <label><input type="checkbox" data-mobile-column="6"> Agregado</label>
+              <label><input type="checkbox" data-mobile-column="7" checked> Hoy</label>
+              <label><input type="checkbox" data-mobile-column="8" checked> Ganancia</label>
+              <label><input type="checkbox" data-mobile-column="9" checked> %</label>
+              <label><input type="checkbox" data-mobile-column="10"> Mes</label>
+              <label><input type="checkbox" data-mobile-column="11" checked> Borrar</label>
+            </aside>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Estado</th>
+                  <th>ID</th>
+                  <th>Fecha</th>
+                  <th>Hora</th>
+                  <th>Cuanto tenia la ultima vez</th>
+                  <th>Plata que Agregué</th>
+                  <th>Cuanto tengo hoy</th>
+                  <th>Ganancia</th>
+                  <th>%</th>
+                  <th>Mes</th>
+                  <th>Accion borrar</th>
+                </tr>
+              </thead>
+              <tbody id="recordsBody"></tbody>
+            </table>
+          </div>
+          <p id="emptyState" class="empty-state">Todavia no hay registros.</p>
+        </section>
+          </div>
+        </section>
+      </main>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div id="chartModal" class="chart-modal is-hidden">
+      <div class="chart-modal-backdrop" data-close-chart-modal></div>
+      <div class="chart-modal-content">
+        <div class="chart-modal-header">
+          <div>
+            <span class="modal-kicker">Vista ampliada</span>
+            <h2 id="chartModalTitle">Gráfico</h2>
+          </div>
+          <div class="chart-modal-actions">
+            <button id="chartZoomOut" type="button">🔍 -</button>
+            <span id="chartZoomLabel" class="chart-zoom-label">Zoom 1.0x</span>
+            <button id="chartZoomIn" type="button">🔍 +</button>
+            <button id="chartZoomReset" type="button">Reset</button>
+            <button id="chartModalClose" type="button">Cerrar</button>
+          </div>
+        </div>
+        <div id="chartModalBody" class="chart-modal-body"></div>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "Auditor de Inversión",
+  "short_name": "Auditor",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#baf2ff",
+  "theme_color": "#00b7ff",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
